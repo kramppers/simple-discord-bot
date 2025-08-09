@@ -1,0 +1,31 @@
+{
+  "name": "bot-discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "register": "node src/deploy-commands.js",
+    "invite": "node scripts/invite.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@discordjs/opus": "^0.10.0",
+    "@discordjs/voice": "^0.18.0",
+    "@distube/ytdl-core": "^4.16.12",
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.1",
+    "ffmpeg-static": "^5.2.0",
+    "mathjs": "^14.6.0",
+    "play-dl": "^1.9.7",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
