@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('unlock').setDescription('Deblocheaza trimiterea de mesaje in canalul curent.').setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
+  category: 'moderation',
   async execute(interaction) {
     const channel = interaction.channel;
     try {

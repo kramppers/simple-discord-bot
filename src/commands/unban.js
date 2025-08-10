@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('unban')
     .setDescription('Debaneaza un utilizator dupa ID.')
     .addStringOption((option) => option.setName('user_id').setDescription('ID-ul utilizatorului').setRequired(true))

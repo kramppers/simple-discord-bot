@@ -6,7 +6,8 @@ const play = require('play-dl');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('play')
-    .setDescription('Reda un URL sau cauta pe YouTube.')
+    .setDescription('Reda un URL sau cauta pe YouTube.'),
+  category: 'music',
     .addStringOption((o) => o.setName('query').setDescription('URL sau cautare').setRequired(true)),
   async execute(interaction) {
     const member = interaction.member;

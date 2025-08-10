@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('botinfo').setDescription('Informatii despre bot.'),
+  category: 'utility',
   async execute(interaction) {
     const { client } = interaction;
     const guildCount = client.guilds.cache.size;

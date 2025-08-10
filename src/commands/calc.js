@@ -4,6 +4,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('calc').setDescription('Calculeaza o expresie.').addStringOption((o) => o.setName('expresie').setDescription('ex: (2+3)*4').setRequired(true)),
+  category: 'utility',
   async execute(interaction) {
     const expr = interaction.options.getString('expresie', true);
     try {

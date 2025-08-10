@@ -6,8 +6,9 @@ module.exports = {
     .setName('kick')
     .setDescription('Da kick unui membru.')
     .addUserOption((option) => option.setName('utilizator').setDescription('Membrul').setRequired(true))
-    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (optional)'))
+    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (opțional)').setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
+  category: 'moderation',
   async execute(interaction) {
     const user = interaction.options.getUser('utilizator', true);
     const reason = interaction.options.getString('motiv') || 'Fara motiv';

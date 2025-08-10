@@ -22,6 +22,7 @@ function fetchJson(url) {
 
 module.exports = {
   data: new SlashCommandBuilder().setName('meme').setDescription('Ia un meme random de pe Reddit.'),
+  category: 'fun',
   async execute(interaction) {
     try {
       const json = await fetchJson('https://meme-api.com/gimme');

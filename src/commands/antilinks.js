@@ -4,6 +4,7 @@ const config = require('../utils/configStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('antilinks')
     .setDescription('Activeaza/dezactiveaza anti-link.')
     .addBooleanOption((o) => o.setName('on').setDescription('true/false').setRequired(true))

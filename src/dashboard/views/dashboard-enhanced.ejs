@@ -1,0 +1,386 @@
+<!-- Content for layout -->
+
+<!-- Dashboard Header -->
+<div class="mb-8 fade-in">
+    <div class="flex items-center justify-between mobile-stack">
+        <div class="mobile-center">
+            <h1 class="text-4xl font-bold text-gray-900 mb-3">
+                <i class="fas fa-tachometer-alt text-discord-blurple mr-3"></i>
+                Dashboard
+            </h1>
+            <p class="text-lg text-gray-600">
+                Bun venit, <span class="font-semibold gradient-text"><%= user.username %></span>! 
+                Gestionează-ți serverele Discord cu botul.
+            </p>
+        </div>
+        <div class="flex items-center space-x-6 mobile-stack mobile-center">
+            <div class="text-center">
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Servere disponibile</p>
+                <p class="text-3xl font-bold text-gray-900"><%= guilds.length %></p>
+            </div>
+            <div class="h-16 w-16 bg-gradient-to-br from-discord-blurple to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-server text-white text-2xl"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bot Status Card -->
+<div class="discord-card card-hover mb-8 fade-in" data-bot-id="<%= bot.id %>">
+    <div class="discord-card-header">
+        <h3 class="text-lg font-semibold text-gray-800">Status Bot</h3>
+    </div>
+    <div class="discord-card-body">
+        <div class="flex items-center justify-between mobile-stack">
+            <div class="flex items-center mobile-center">
+                <div class="relative">
+                    <img src="<%= bot.displayAvatarURL() %>" alt="Bot Avatar" class="w-20 h-20 rounded-2xl object-cover border-4 border-gray-200 hover:border-discord-blurple transition-colors">
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                </div>
+                <div class="ml-6 mobile-mt-4">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2"><%= bot.username %></h3>
+                    <p class="text-gray-600 mb-1">Status: <span id="bot-status" class="text-green-500 font-semibold">Online</span></p>
+                    <p class="text-sm text-gray-500">ID: <%= bot.id %></p>
+                </div>
+            </div>
+            <div class="text-right mobile-center">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="stats-card">
+                        <div class="stats-number" id="total-guilds">-</div>
+                        <div class="stats-label">Servere</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="total-members">-</div>
+                        <div class="stats-label">Utilizatori</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Health Monitoring -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 slide-up">
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-memory text-green-600 text-xl"></i>
+            </div>
+            <h4 class="text-sm font-medium text-gray-800 mb-1">Memorie</h4>
+            <div class="text-2xl font-bold text-gray-900" id="memory-usage">-</div>
+            <div class="text-xs text-gray-500" id="memory-percentage">-</div>
+        </div>
+    </div>
+    
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-microchip text-blue-600 text-xl"></i>
+            </div>
+            <h4 class="text-sm font-medium text-gray-800 mb-1">CPU</h4>
+            <div class="text-2xl font-bold text-gray-900" id="cpu-usage">-</div>
+            <div class="text-xs text-gray-500" id="cpu-status">-</div>
+        </div>
+    </div>
+    
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-database text-purple-600 text-xl"></i>
+            </div>
+            <h4 class="text-sm font-medium text-gray-800 mb-1">Database</h4>
+            <div class="text-2xl font-bold text-gray-900" id="db-status">-</div>
+            <div class="text-xs text-gray-500" id="db-latency">-</div>
+        </div>
+    </div>
+    
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-clock text-yellow-600 text-xl"></i>
+            </div>
+            <h4 class="text-sm font-medium text-gray-800 mb-1">Uptime</h4>
+            <div class="text-2xl font-bold text-gray-900" id="uptime">-</div>
+            <div class="text-xs text-gray-500" id="ping">-</div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Section -->
+<div class="mb-8 slide-up">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">
+            <i class="fas fa-bolt text-discord-blurple mr-3"></i>
+            Acțiuni Rapide
+        </h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="discord-card card-hover">
+            <div class="discord-card-body text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-edit text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Editor Bot</h3>
+                <p class="text-gray-600 mb-4 text-sm">Configurează setările principale ale bot-ului</p>
+                <button class="btn-modern primary w-full quick-action-btn" data-action="bot-editor">
+                    <i class="fas fa-cog mr-2"></i>
+                    Configurează
+                </button>
+            </div>
+        </div>
+        
+        <div class="discord-card card-hover">
+            <div class="discord-card-body text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-terminal text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Editor Comenzi</h3>
+                <p class="text-gray-600 mb-4 text-sm">Gestionează comenzile personalizate</p>
+                <button class="btn-modern primary w-full quick-action-btn" data-action="command-editor">
+                    <i class="fas fa-code mr-2"></i>
+                    Gestionează
+                </button>
+            </div>
+        </div>
+        
+        <div class="discord-card card-hover">
+            <div class="discord-card-body text-center">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-rocket text-purple-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Deploy Comenzi</h3>
+                <p class="text-gray-600 mb-4 text-sm">Actualizează comenzile slash</p>
+                <button class="btn-modern primary w-full quick-action-btn" data-action="deploy-commands">
+                    <i class="fas fa-upload mr-2"></i>
+                    Deploy
+                </button>
+            </div>
+        </div>
+        
+        <div class="discord-card card-hover">
+            <div class="discord-card-body text-center">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-download text-yellow-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Backup</h3>
+                <p class="text-gray-600 mb-4 text-sm">Creează backup complet</p>
+                <button class="btn-modern primary w-full quick-action-btn" data-action="create-backup">
+                    <i class="fas fa-save mr-2"></i>
+                    Backup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="mb-8 slide-up">
+    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div class="search-container flex-1 max-w-md">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <input type="text" 
+                   id="guild-search" 
+                   placeholder="Caută servere..." 
+                   class="search-input">
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="refresh-stats" 
+                    class="btn-modern secondary"
+                    data-loading="false">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Actualizează
+            </button>
+            <select id="sort-guilds" class="form-input max-w-xs">
+                <option value="name">Sortează după nume</option>
+                <option value="members">Sortează după membri</option>
+                <option value="recent">Cele mai recente</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Servers Grid -->
+<div class="mb-8 slide-up">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">
+            <i class="fas fa-server text-discord-blurple mr-3"></i>
+            Serverele Tale
+        </h2>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-500">Total: <span id="guild-count" class="font-semibold text-gray-900"><%= guilds.length %></span></span>
+        </div>
+    </div>
+    
+    <% if (guilds.length === 0) { %>
+        <div class="text-center py-16">
+            <div class="mx-auto h-20 w-20 bg-gray-200 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-exclamation-triangle text-gray-400 text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900 mb-3">Nu ai servere disponibile</h3>
+            <p class="text-gray-600 mb-6 max-w-md mx-auto">
+                Nu ai permisiuni de administrator sau moderator în niciun server, 
+                sau botul nu este prezent în serverele tale.
+            </p>
+            <a href="/" class="btn-modern primary">
+                <i class="fas fa-home mr-2"></i>
+                Înapoi la Acasă
+            </a>
+        </div>
+    <% } else { %>
+        <div class="grid-auto-fit guilds-grid">
+            <% guilds.forEach((guild, index) => { %>
+                <div class="discord-card card-hover fade-in" 
+                     style="animation-delay: <%= index * 0.1 %>s"
+                     data-guild-name="<%= guild.name %>"
+                     data-guild-description="<%= guild.description || '' %>"
+                     data-guild-members="<%= guild.approximate_member_count || 0 %>"
+                     data-guild-created="<%= guild.created_at || '' %>">
+                    <div class="discord-card-body">
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <% if (guild.icon) { %>
+                                    <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" 
+                                         alt="<%= guild.name %>" 
+                                         class="server-icon">
+                                <% } else { %>
+                                    <div class="server-icon bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center">
+                                        <span class="text-white font-bold text-lg"><%= guild.name.charAt(0) %></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate">
+                                    <%= guild.name %>
+                                </h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i class="fas fa-users mr-2 text-discord-blurple"></i>
+                                        <span><%= guild.approximate_member_count || 'N/A' %> membri</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <i class="fas fa-crown mr-2 text-discord-yellow"></i>
+                                        <span><%= guild.owner ? 'Proprietar' : 'Moderator' %></span>
+                                    </div>
+                                    <% if (guild.description) { %>
+                                        <p class="text-sm text-gray-500 truncate" title="<%= guild.description %>">
+                                            <%= guild.description %>
+                                        </p>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <% if (guild.owner) { %>
+                                        <span class="badge badge-primary">
+                                            <i class="fas fa-crown mr-1"></i>
+                                            Proprietar
+                                        </span>
+                                    <% } else { %>
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-shield-alt mr-1"></i>
+                                            Moderator
+                                        </span>
+                                    <% } %>
+                                </div>
+                                <a href="/dashboard/<%= guild.id %>" 
+                                   class="btn-modern primary text-sm px-4 py-2">
+                                    <i class="fas fa-cog mr-2"></i>
+                                    Gestionează
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 slide-up">
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-plus text-green-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Adaugă Bot-ul</h3>
+            <p class="text-gray-600 mb-4">Invită bot-ul în serverele tale pentru a începe să îl gestionezi.</p>
+            <a href="/invite" class="btn-modern primary w-full">
+                <i class="fab fa-discord mr-2"></i>
+                Invită Bot-ul
+            </a>
+        </div>
+    </div>
+    
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-book text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Documentație</h3>
+            <p class="text-gray-600 mb-4">Învață cum să folosești toate funcționalitățile bot-ului.</p>
+            <a href="/docs" class="btn-modern secondary w-full">
+                <i class="fas fa-external-link-alt mr-2"></i>
+                Vezi Documentația
+            </a>
+        </div>
+    </div>
+    
+    <div class="discord-card card-hover">
+        <div class="discord-card-body text-center">
+            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-headset text-purple-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Suport</h3>
+            <p class="text-gray-600 mb-4">Ai nevoie de ajutor? Contactează echipa de suport.</p>
+            <a href="/support" class="btn-modern secondary w-full">
+                <i class="fas fa-comments mr-2"></i>
+                Contactează Suportul
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="discord-card slide-up">
+    <div class="discord-card-header">
+        <h3 class="text-lg font-semibold text-gray-800">Activitate Recentă</h3>
+    </div>
+    <div class="discord-card-body">
+        <div class="space-y-4">
+            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Bot-ul a fost conectat cu succes</p>
+                    <p class="text-xs text-gray-500">Acum 5 minute</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-server text-blue-600"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Server nou adăugat</p>
+                    <p class="text-xs text-gray-500">Acum 2 ore</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-cog text-yellow-600"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Configurare actualizată</p>
+                    <p class="text-xs text-gray-500">Ieri</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

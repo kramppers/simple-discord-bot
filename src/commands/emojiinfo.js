@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('emojiinfo').setDescription('Informatii despre un emoji custom.').addStringOption((o) => o.setName('emoji').setDescription('emoji-ul').setRequired(true)),
+  category: 'utility',
   async execute(interaction) {
     const raw = interaction.options.getString('emoji', true);
     const match = /<(a?):(\w+):(\d+)>/.exec(raw);

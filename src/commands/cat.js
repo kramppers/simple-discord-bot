@@ -16,6 +16,7 @@ function fetchJson(url) {
 
 module.exports = {
   data: new SlashCommandBuilder().setName('cat').setDescription('O pisica random 😺'),
+  category: 'fun',
   async execute(interaction) {
     try {
       const json = await fetchJson('https://aws.random.cat/meow');

@@ -4,6 +4,7 @@ const { getOrCreatePlayer } = require('../music/player');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('pause').setDescription('Pune pauza la redare.'),
+  category: 'music',
   async execute(interaction) {
     const gmp = getOrCreatePlayer(interaction.guild);
     gmp.pause();

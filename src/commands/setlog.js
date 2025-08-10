@@ -4,6 +4,7 @@ const config = require('../utils/configStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('setlog')
     .setDescription('Seteaza canalul de loguri.')
     .addChannelOption((o) => o.setName('canal').setDescription('Canalul de loguri').setRequired(true))

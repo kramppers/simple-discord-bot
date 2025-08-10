@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'utility',
     .setName('avatar')
     .setDescription('Afiseaza avatarul unui utilizator.')
     .addUserOption((option) => option.setName('utilizator').setDescription('Utilizatorul (optional)')),

@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('roleinfo').setDescription('Informatii despre un rol.').addRoleOption((o) => o.setName('rol').setDescription('Rolul').setRequired(true)),
+  category: 'utility',
   async execute(interaction) {
     const role = interaction.options.getRole('rol', true);
     const embed = new EmbedBuilder()

@@ -7,6 +7,7 @@ const { sendEmbedLog } = require('../utils/logger');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('warn')
     .setDescription('Avertizeaza un membru.')
     .addUserOption((o) => o.setName('utilizator').setDescription('Membrul').setRequired(true))

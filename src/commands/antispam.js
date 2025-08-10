@@ -4,11 +4,12 @@ const config = require('../utils/configStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('antispam')
     .setDescription('Activeaza/dezactiveaza anti-spam sau seteaza limitele.')
-    .addBooleanOption((o) => o.setName('on').setDescription('true/false'))
-    .addIntegerOption((o) => o.setName('limita').setDescription('Mesaje permise pe fereastra').setMinValue(2).setMaxValue(20))
-    .addIntegerOption((o) => o.setName('fereastra').setDescription('Fereastra in secunde').setMinValue(3).setMaxValue(60))
+    .addBooleanOption((o) => o.setName('on').setDescription('true/false').setRequired(false))
+    .addIntegerOption((o) => o.setName('limita').setDescription('Mesaje permise pe fereastra').setRequired(false).setMinValue(2).setMaxValue(20))
+    .addIntegerOption((o) => o.setName('fereastra').setDescription('Fereastra in secunde').setRequired(false).setMinValue(3).setMaxValue(60))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
   async execute(interaction) {
     const on = interaction.options.getBoolean('on');

@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'utility',
     .setName('move')
     .setDescription('Muta un membru intr-un canal vocal.')
     .addUserOption((o) => o.setName('utilizator').setDescription('Membrul').setRequired(true))

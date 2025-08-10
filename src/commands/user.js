@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('user').setDescription('Informatii despre utilizatorul tau.'),
+  category: 'utility',
   async execute(interaction) {
     const member = interaction.member;
     const embed = new EmbedBuilder()

@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('servericon').setDescription('Afiseaza avatarul serverului.'),
+  category: 'utility',
   async execute(interaction) {
     const guild = interaction.guild;
     const url = guild.iconURL({ size: 1024 });

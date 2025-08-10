@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('addrole')
     .setDescription('Acorda un rol unui membru.')
     .addUserOption((o) => o.setName('utilizator').setDescription('Membrul').setRequired(true))

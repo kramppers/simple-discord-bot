@@ -14,6 +14,7 @@ const answers = [
 
 module.exports = {
   data: new SlashCommandBuilder().setName('8ball').setDescription('Pune o intrebare.').addStringOption((o) => o.setName('intrebare').setDescription('Intrebarea').setRequired(true)),
+  category: 'fun',
   async execute(interaction) {
     const q = interaction.options.getString('intrebare', true);
     const a = answers[Math.floor(Math.random() * answers.length)];

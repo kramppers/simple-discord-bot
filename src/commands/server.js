@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('server').setDescription('Informatii despre server.'),
+  category: 'utility',
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {

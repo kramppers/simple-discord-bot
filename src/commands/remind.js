@@ -4,6 +4,7 @@ const { parseDurationToMs, formatDurationMs } = require('../utils/time');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'fun',
     .setName('remind')
     .setDescription('Seteaza un reminder privat.')
     .addStringOption((o) => o.setName('in').setDescription('Durata (ex: 10m, 1h, 2d)').setRequired(true))

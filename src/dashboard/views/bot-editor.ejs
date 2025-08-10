@@ -1,0 +1,708 @@
+<!-- Content for layout -->
+
+<!-- Bot Editor Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                <i class="fas fa-robot text-discord-blurple mr-3"></i>
+                Editor Bot
+            </h1>
+            <p class="text-gray-600 dark:text-gray-300 mt-2">
+                Editează și gestionează setările botului Discord
+            </p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="/dashboard" class="text-discord-blurple hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Înapoi la Dashboard
+            </a>
+            <a href="/dashboard/commands" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-code mr-2"></i>
+                Editor Comenzi
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bot Status Overview -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mb-8">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <img src="<%= bot.displayAvatarURL() %>" alt="Bot Avatar" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white"><%= bot.username %></h3>
+                <p class="text-gray-600 dark:text-gray-300">Status: <span id="bot-status" class="text-green-500 font-semibold">Online</span></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">ID: <%= bot.id %></p>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Servere</p>
+                    <p id="total-guilds" class="text-lg font-semibold text-gray-800 dark:text-white"><%= guilds.length %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Utilizatori</p>
+                    <p id="total-members" class="text-lg font-semibold text-gray-800 dark:text-white">-</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Uptime</p>
+                    <p id="bot-uptime" class="text-lg font-semibold text-gray-800 dark:text-white">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Bar -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-4 mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+            <button onclick="deployCommands()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+                <i class="fas fa-rocket mr-2"></i>
+                Deploy Comenzi
+            </button>
+            <button onclick="clearCache()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-broom mr-2"></i>
+                Curăță Cache
+            </button>
+            <button onclick="backupBot()" class="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                Backup Bot
+            </button>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="restartBot()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center">
+                <i class="fas fa-redo mr-2"></i>
+                Restart Bot
+            </button>
+            <button onclick="updateBot()" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors flex items-center">
+                <i class="fas fa-sync mr-2"></i>
+                Actualizează
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Editor Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Bot Configuration -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-cog text-discord-blurple mr-2"></i>
+            Configurare Bot
+        </h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Prefix Comenzi</label>
+                <input type="text" id="bot-prefix" value="/" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple dark:bg-slate-700 dark:text-white">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Activitate Bot</label>
+                <select id="bot-activity" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple dark:bg-slate-700 dark:text-white">
+                    <option value="PLAYING">Jucând</option>
+                    <option value="LISTENING">Ascultând</option>
+                    <option value="WATCHING">Urmărind</option>
+                    <option value="COMPETING">Competind</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Mesaj Activitate</label>
+                <input type="text" id="bot-activity-text" value="/help" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple dark:bg-slate-700 dark:text-white">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                <select id="bot-status-select" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple dark:bg-slate-700 dark:text-white">
+                    <option value="online">Online</option>
+                    <option value="idle">Inactiv</option>
+                    <option value="dnd">Nu deranja</option>
+                    <option value="invisible">Invizibil</option>
+                </select>
+            </div>
+            
+            <button onclick="saveBotConfig()" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-save mr-2"></i>
+                Salvează Configurația
+            </button>
+        </div>
+    </div>
+
+    <!-- Bot Analytics -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-chart-line text-discord-blurple mr-2"></i>
+            Analiză Bot
+        </h3>
+        
+        <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Comenzi Executate</p>
+                    <p id="commands-executed" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+                </div>
+                <div class="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Mesaje Procesate</p>
+                    <p id="messages-processed" class="text-xl font-bold text-gray-800 dark:text-white">0</p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Performanță Bot</p>
+                <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-2">
+                    <div id="bot-performance" class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width: 85%"></div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">85% - Excelent</p>
+            </div>
+            
+            <button onclick="refreshAnalytics()" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-refresh mr-2"></i>
+                Actualizează Analiza
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced Bot Management -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+    <!-- Command Management -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-terminal text-discord-blurple mr-2"></i>
+            Gestionare Comenzi
+        </h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Total Comenzi</span>
+                <span id="total-commands" class="font-semibold text-gray-800 dark:text-white">0</span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Comenzi Active</span>
+                <span id="active-commands" class="font-semibold text-green-600">0</span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Comenzi Dezactivate</span>
+                <span id="disabled-commands" class="font-semibold text-red-600">0</span>
+            </div>
+            
+            <button onclick="manageCommands()" class="w-full bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                <i class="fas fa-cog mr-2"></i>
+                Gestionează Comenzi
+            </button>
+        </div>
+    </div>
+
+    <!-- Server Management -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-server text-discord-blurple mr-2"></i>
+            Gestionare Servere
+        </h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Servere Active</span>
+                <span id="active-servers" class="font-semibold text-green-600"><%= guilds.length %></span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Total Membri</span>
+                <span id="total-server-members" class="font-semibold text-gray-800 dark:text-white">-</span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Servere Noi (24h)</span>
+                <span id="new-servers" class="font-semibold text-blue-600">0</span>
+            </div>
+            
+            <button onclick="manageServers()" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-server mr-2"></i>
+                Gestionează Servere
+            </button>
+        </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-heartbeat text-discord-blurple mr-2"></i>
+            Sănătate Sistem
+        </h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">CPU Usage</span>
+                <span id="cpu-usage" class="font-semibold text-gray-800 dark:text-white">-</span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Memory Usage</span>
+                <span id="memory-usage" class="font-semibold text-gray-800 dark:text-white">-</span>
+            </div>
+            <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Ping</span>
+                <span id="bot-ping" class="font-semibold text-gray-800 dark:text-white">-</span>
+            </div>
+            
+            <button onclick="checkSystemHealth()" class="w-full bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                <i class="fas fa-stethoscope mr-2"></i>
+                Verifică Sănătatea
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Bot Logs -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mt-6">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <i class="fas fa-list-alt text-discord-blurple mr-2"></i>
+            Log-uri Bot
+        </h3>
+        <div class="flex items-center space-x-2">
+            <select id="log-level" class="px-3 py-1 border border-gray-300 dark:border-slate-600 rounded text-sm dark:bg-slate-700 dark:text-white">
+                <option value="all">Toate</option>
+                <option value="info">Info</option>
+                <option value="warn">Avertismente</option>
+                <option value="error">Erori</option>
+            </select>
+            <button onclick="clearLogs()" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
+                <i class="fas fa-trash mr-1"></i>
+                Curăță
+            </button>
+        </div>
+    </div>
+    
+    <div id="bot-logs" class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 h-64 overflow-y-auto font-mono text-sm">
+        <div class="text-gray-500 dark:text-gray-400 text-center">Log-urile vor apărea aici...</div>
+    </div>
+</div>
+
+<!-- Advanced Settings -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mt-6">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <i class="fas fa-sliders-h text-discord-blurple mr-2"></i>
+        Setări Avansate
+    </h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+            <h4 class="font-medium text-gray-800 dark:text-white">Configurare Avansată</h4>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Auto-restart la erori</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="auto-restart" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Log-uri detaliate</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="detailed-logs" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Monitorizare în timp real</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="real-time-monitoring" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="space-y-4">
+            <h4 class="font-medium text-gray-800 dark:text-white">Notificări</h4>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Notificări Discord</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="discord-notifications" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Notificări Email</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="email-notifications" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Notificări Webhook</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="webhook-notifications" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-6 flex space-x-3">
+        <button onclick="saveAdvancedSettings()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+            <i class="fas fa-save mr-2"></i>
+            Salvează Setările
+        </button>
+        <button onclick="resetToDefaults()" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+            <i class="fas fa-undo mr-2"></i>
+            Reset la Default
+        </button>
+    </div>
+</div>
+
+<script>
+// Bot Editor JavaScript Functions
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    updateBotStats();
+    loadAdvancedSettings();
+    startRealTimeUpdates();
+});
+
+function updateBotStats() {
+    // Update bot status
+    fetch('/api/bot/status')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('bot-status').textContent = data.status;
+                document.getElementById('bot-status').className = `text-${data.status === 'online' ? 'green' : 'red'}-500 font-semibold`;
+                document.getElementById('bot-uptime').textContent = data.uptime;
+                document.getElementById('total-members').textContent = data.totalMembers;
+            }
+        })
+        .catch(error => console.error('Error fetching bot status:', error));
+}
+
+function saveBotConfig() {
+    const config = {
+        prefix: document.getElementById('bot-prefix').value,
+        activity: document.getElementById('bot-activity').value,
+        activityText: document.getElementById('bot-activity-text').value,
+        status: document.getElementById('bot-status-select').value
+    };
+    
+    fetch('/api/bot/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            showNotification('Configurația botului a fost salvată cu succes!', 'success');
+        } else {
+            showNotification('Eroare la salvarea configurației: ' + result.error, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving bot config:', error);
+        showNotification('Eroare la salvarea configurației', 'error');
+    });
+}
+
+function deployCommands() {
+    showNotification('Se deploy-ează comenzile...', 'info');
+    
+    fetch('/api/bot/deploy-commands', { method: 'POST' })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showNotification('Comenzile au fost deploy-uite cu succes!', 'success');
+            } else {
+                showNotification('Eroare la deploy-ul comenzilor: ' + result.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error deploying commands:', error);
+            showNotification('Eroare la deploy-ul comenzilor', 'error');
+        });
+}
+
+function clearCache() {
+    fetch('/api/bot/clear-cache', { method: 'POST' })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showNotification('Cache-ul a fost curățat cu succes!', 'success');
+            } else {
+                showNotification('Eroare la curățarea cache-ului: ' + result.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error clearing cache:', error);
+            showNotification('Eroare la curățarea cache-ului', 'error');
+        });
+}
+
+function backupBot() {
+    fetch('/api/bot/backup', { method: 'POST' })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showNotification('Backup-ul a fost creat cu succes!', 'success');
+                // Download backup file
+                if (result.downloadUrl) {
+                    window.open(result.downloadUrl, '_blank');
+                }
+            } else {
+                showNotification('Eroare la crearea backup-ului: ' + result.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating backup:', error);
+            showNotification('Eroare la crearea backup-ului', 'error');
+        });
+}
+
+function restartBot() {
+    if (confirm('Ești sigur că vrei să repornești botul? Aceasta va întrerupe temporar serviciile.')) {
+        showNotification('Se repornește botul...', 'warning');
+        
+        fetch('/api/bot/restart', { method: 'POST' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Botul a fost repornit cu succes!', 'success');
+                    setTimeout(() => location.reload(), 3000);
+                } else {
+                    showNotification('Eroare la repornirea botului: ' + result.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error restarting bot:', error);
+                showNotification('Eroare la repornirea botului', 'error');
+            });
+    }
+}
+
+function updateBot() {
+    showNotification('Se verifică actualizările...', 'info');
+    
+    fetch('/api/bot/update', { method: 'POST' })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showNotification('Botul a fost actualizat cu succes!', 'success');
+                if (result.requiresRestart) {
+                    setTimeout(() => location.reload(), 3000);
+                }
+            } else {
+                showNotification('Eroare la actualizarea botului: ' + result.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating bot:', error);
+            showNotification('Eroare la actualizarea botului', 'error');
+        });
+}
+
+function refreshAnalytics() {
+    fetch('/api/bot/analytics')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('commands-executed').textContent = data.commandsExecuted;
+                document.getElementById('messages-processed').textContent = data.messagesProcessed;
+                
+                const performance = data.performance;
+                const performanceBar = document.getElementById('bot-performance');
+                performanceBar.style.width = performance + '%';
+                
+                let performanceText = performance + '% - ';
+                if (performance >= 90) performanceText += 'Excelent';
+                else if (performance >= 75) performanceText += 'Bun';
+                else if (performance >= 60) performanceText += 'Acceptabil';
+                else performanceText += 'Slab';
+                
+                performanceBar.nextElementSibling.textContent = performanceText;
+            }
+        })
+        .catch(error => console.error('Error fetching analytics:', error));
+}
+
+function manageCommands() {
+    window.location.href = '/dashboard/commands';
+}
+
+function manageServers() {
+    // Open server management modal or redirect
+    showNotification('Funcționalitatea de gestionare servere va fi implementată în curând!', 'info');
+}
+
+function checkSystemHealth() {
+    fetch('/api/bot/health')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('cpu-usage').textContent = data.cpuUsage + '%';
+                document.getElementById('memory-usage').textContent = data.memoryUsage + '%';
+                document.getElementById('bot-ping').textContent = data.ping + 'ms';
+                
+                // Update performance indicators
+                const cpuUsage = data.cpuUsage;
+                const memoryUsage = data.memoryUsage;
+                
+                if (cpuUsage > 80 || memoryUsage > 80) {
+                    showNotification('Atenție: Utilizarea resurselor este ridicată!', 'warning');
+                }
+            }
+        })
+        .catch(error => console.error('Error checking system health:', error));
+}
+
+function clearLogs() {
+    if (confirm('Ești sigur că vrei să ștergi toate log-urile?')) {
+        document.getElementById('bot-logs').innerHTML = '<div class="text-gray-500 dark:text-gray-400 text-center">Log-urile au fost șterse</div>';
+        showNotification('Log-urile au fost șterse cu succes!', 'success');
+    }
+}
+
+function saveAdvancedSettings() {
+    const settings = {
+        autoRestart: document.getElementById('auto-restart').checked,
+        detailedLogs: document.getElementById('detailed-logs').checked,
+        realTimeMonitoring: document.getElementById('real-time-monitoring').checked,
+        discordNotifications: document.getElementById('discord-notifications').checked,
+        emailNotifications: document.getElementById('email-notifications').checked,
+        webhookNotifications: document.getElementById('webhook-notifications').checked
+    };
+    
+    fetch('/api/bot/advanced-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            showNotification('Setările avansate au fost salvate cu succes!', 'success');
+        } else {
+            showNotification('Eroare la salvarea setărilor: ' + result.error, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving advanced settings:', error);
+        showNotification('Eroare la salvarea setărilor', 'error');
+    });
+}
+
+function resetToDefaults() {
+    if (confirm('Ești sigur că vrei să resetezi toate setările la valorile implicite?')) {
+        document.getElementById('auto-restart').checked = false;
+        document.getElementById('detailed-logs').checked = false;
+        document.getElementById('real-time-monitoring').checked = true;
+        document.getElementById('discord-notifications').checked = true;
+        document.getElementById('email-notifications').checked = false;
+        document.getElementById('webhook-notifications').checked = false;
+        
+        showNotification('Setările au fost resetate la valorile implicite!', 'success');
+    }
+}
+
+function loadAdvancedSettings() {
+    fetch('/api/bot/advanced-settings')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const settings = data.settings;
+                document.getElementById('auto-restart').checked = settings.autoRestart || false;
+                document.getElementById('detailed-logs').checked = settings.detailedLogs || false;
+                document.getElementById('real-time-monitoring').checked = settings.realTimeMonitoring !== false;
+                document.getElementById('discord-notifications').checked = settings.discordNotifications !== false;
+                document.getElementById('email-notifications').checked = settings.emailNotifications || false;
+                document.getElementById('webhook-notifications').checked = settings.webhookNotifications || false;
+            }
+        })
+        .catch(error => console.error('Error loading advanced settings:', error));
+}
+
+function startRealTimeUpdates() {
+    // Update command counts
+    fetch('/api/bot/command-stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('total-commands').textContent = data.totalCommands;
+                document.getElementById('active-commands').textContent = data.activeCommands;
+                document.getElementById('disabled-commands').textContent = data.disabledCommands;
+            }
+        })
+        .catch(error => console.error('Error fetching command stats:', error));
+    
+    // Update server stats
+    fetch('/api/bot/server-stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('total-server-members').textContent = data.totalMembers;
+                document.getElementById('new-servers').textContent = data.newServers24h;
+            }
+        })
+        .catch(error => console.error('Error fetching server stats:', error));
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${getNotificationColor(type)} ${getNotificationBorderColor(type)}`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="${getNotificationIcon(type)} mr-3"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+function getNotificationColor(type) {
+    const colors = {
+        success: 'bg-green-50 text-green-800 dark:bg-green-900 dark:text-green-200',
+        error: 'bg-red-50 text-red-800 dark:bg-red-900 dark:text-red-200',
+        warning: 'bg-yellow-50 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+        info: 'bg-blue-50 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationBorderColor(type) {
+    const colors = {
+        success: 'border-l-4 border-green-400',
+        error: 'border-l-4 border-red-400',
+        warning: 'border-l-4 border-yellow-400',
+        info: 'border-l-4 border-blue-400'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+    };
+    return icons[type] || icons.info;
+}
+
+// Auto-refresh bot stats every 30 seconds
+setInterval(updateBotStats, 30000);
+
+// Auto-refresh analytics every 60 seconds
+setInterval(refreshAnalytics, 60000);
+
+// Auto-check system health every 2 minutes
+setInterval(checkSystemHealth, 120000);
+</script>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ro" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Discord Bot Dashboard' %></title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-card: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --accent-color: #5865f2;
+            --accent-hover: #4752c4;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+            --accent-color: #5865f2;
+            --accent-hover: #4752c4;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .discord-blurple {
+            background-color: #5865f2;
+        }
+        .discord-dark {
+            background-color: #2c2f33;
+        }
+        .discord-darker {
+            background-color: #23272a;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Dark mode transitions */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Dark mode specific styles */
+        [data-theme="dark"] .bg-white {
+            background-color: var(--bg-card);
+        }
+        
+        [data-theme="dark"] .text-gray-800 {
+            color: var(--text-primary);
+        }
+        
+        [data-theme="dark"] .text-gray-600 {
+            color: var(--text-secondary);
+        }
+        
+        [data-theme="dark"] .text-gray-500 {
+            color: var(--text-muted);
+        }
+        
+        [data-theme="dark"] .border-gray-300 {
+            border-color: var(--border-color);
+        }
+        
+        [data-theme="dark"] .bg-gray-100 {
+            background-color: var(--bg-secondary);
+        }
+        
+        [data-theme="dark"] .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen dark:bg-slate-900" data-theme="light">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg dark:bg-slate-800 dark:shadow-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="text-2xl font-bold text-gray-800 dark:text-white">
+                            <i class="fab fa-discord text-discord-blurple mr-2"></i>
+                            Bot Dashboard
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="/" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                            <i class="fas fa-home mr-1"></i> Acasă
+                        </a>
+                        <% if (locals.isAuthenticated) { %>
+                            <a href="/dashboard" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                            </a>
+                            <a href="/dashboard/commands" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                <i class="fas fa-code mr-1"></i> Editor Comenzi
+                            </a>
+                            <a href="/dashboard/bot-editor" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                                <i class="fas fa-robot mr-1"></i> Editor Bot
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors" data-tooltip="Schimbă tema">
+                        <i class="fas fa-moon text-lg" id="theme-icon"></i>
+                    </button>
+                    
+                    <% if (locals.isAuthenticated && locals.user) { %>
+                        <div class="relative">
+                            <button class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-blurple" id="user-menu-button">
+                                <img class="h-8 w-8 rounded-full" src="https://cdn.discordapp.com/avatars/<%= locals.user.id %>/<%= locals.user.avatar %>.png" alt="Avatar">
+                                <span class="ml-2 text-gray-700 dark:text-white hidden md:block"><%= locals.user.username %></span>
+                                <i class="fas fa-chevron-down ml-1 text-gray-400 dark:text-gray-300"></i>
+                            </button>
+                            
+                            <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-slate-800 ring-1 ring-black ring-opacity-5 focus:outline-none" id="user-menu">
+                                <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700">
+                                    <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                                </a>
+                                <a href="/dashboard/commands" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700">
+                                    <i class="fas fa-code mr-2"></i> Editor Comenzi
+                                </a>
+                                <a href="/dashboard/bot-editor" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700">
+                                    <i class="fas fa-robot mr-2"></i> Editor Bot
+                                </a>
+                                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Deconectare
+                                </a>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <a href="/login" class="discord-blurple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-discord mr-2"></i> Conectare Discord
+                        </a>
+                    <% } %>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-discord-blurple focus:outline-none focus:text-discord-blurple" id="mobile-menu-button">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="/" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Acasă
+                </a>
+                <% if (locals.isAuthenticated) { %>
+                    <a href="/dashboard" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+                        <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                    </a>
+                    <a href="/dashboard/commands" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+                        <i class="fas fa-code mr-2"></i> Editor Comenzi
+                    </a>
+                    <a href="/dashboard/bot-editor" class="text-gray-600 hover:text-discord-blurple dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors">
+                        <i class="fas fa-robot mr-2"></i> Editor Bot
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-12 dark:bg-slate-800 dark:shadow-slate-900/50">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-500 dark:text-gray-400">
+                <p>&copy; 2025 Discord Bot Dashboard. Creat cu <i class="fas fa-heart text-red-500"></i> de krv1337.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/app.js"></script>
+    <script>
+        // Theme management
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        const body = document.body;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        body.classList.toggle('dark', savedTheme === 'dark');
+        updateThemeIcon(savedTheme);
+        
+        // Theme toggle functionality
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                body.classList.toggle('dark', newTheme === 'dark');
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            if (themeIcon) {
+                if (theme === 'dark') {
+                    themeIcon.className = 'fas fa-sun text-lg';
+                    themeIcon.setAttribute('data-tooltip', 'Schimbă la tema deschisă');
+                } else {
+                    themeIcon.className = 'fas fa-moon text-lg';
+                    themeIcon.setAttribute('data-tooltip', 'Schimbă la tema închisă');
+                }
+            }
+        }
+        
+        // User menu toggle
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+        
+        if (userMenuButton && userMenu) {
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userMenuButton.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mobileMenu && !mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

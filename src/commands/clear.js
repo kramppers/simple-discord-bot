@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('clear')
     .setDescription('Sterge un numar de mesaje din acest canal (1-100).')
     .addIntegerOption((option) =>

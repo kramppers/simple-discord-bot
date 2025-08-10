@@ -4,25 +4,28 @@ const config = require('../utils/configStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('escalation')
     .setDescription('Configureaza actiunile automate (dupa warn-uri sau spam).')
-    .addBooleanOption((o) => o.setName('on').setDescription('Activeaza/Dezactiveaza actiunile automate'))
-    .addIntegerOption((o) => o.setName('warn_threshold').setDescription('Pragul de warn-uri').setMinValue(1).setMaxValue(10))
+    .addBooleanOption((o) => o.setName('on').setDescription('Activeaza/Dezactiveaza actiunile automate').setRequired(false))
+    .addIntegerOption((o) => o.setName('warn_threshold').setDescription('Pragul de warn-uri').setRequired(false).setMinValue(1).setMaxValue(10))
     .addStringOption((o) =>
       o
         .setName('warn_action')
         .setDescription('Actiune la prag: timeout sau ban')
+        .setRequired(false)
         .addChoices({ name: 'timeout', value: 'timeout' }, { name: 'ban', value: 'ban' }),
     )
-    .addIntegerOption((o) => o.setName('warn_timeout_min').setDescription('Durata timeout (minute)').setMinValue(1).setMaxValue(1440))
-    .addIntegerOption((o) => o.setName('spam_threshold').setDescription('Cate incalcari anti-spam pana la actiune').setMinValue(1).setMaxValue(10))
+    .addIntegerOption((o) => o.setName('warn_timeout_min').setDescription('Durata timeout (minute)').setRequired(false).setMinValue(1).setMaxValue(1440))
+    .addIntegerOption((o) => o.setName('spam_threshold').setDescription('Cate incalcari anti-spam pana la actiune').setRequired(false).setMinValue(1).setMaxValue(10))
     .addStringOption((o) =>
       o
         .setName('spam_action')
         .setDescription('Actiune pentru spam: timeout sau ban')
+        .setRequired(false)
         .addChoices({ name: 'timeout', value: 'timeout' }, { name: 'ban', value: 'ban' }),
     )
-    .addIntegerOption((o) => o.setName('spam_timeout_min').setDescription('Durata timeout pentru spam (minute)').setMinValue(1).setMaxValue(1440))
+    .addIntegerOption((o) => o.setName('spam_timeout_min').setDescription('Durata timeout pentru spam (minute)').setRequired(false).setMinValue(1).setMaxValue(1440))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
   async execute(interaction) {
     const partial = {};

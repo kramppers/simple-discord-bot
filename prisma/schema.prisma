@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Tabela pentru utilizatori și economy
+model User {
+  id        String   @id @default(cuid())
+  discordId String   @unique
+  guildId   String
+  username  String
+  coins     Int      @default(0)
+  bank      Int      @default(0)
+  level     Int      @default(1)
+  xp        Int      @default(0)
+  lastDaily DateTime?
+  lastWeekly DateTime?
+  lastWork  DateTime?
+  lastRob   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relații
+  transactions Transaction[]
+  inventory    InventoryItem[]
+  warnings     Warning[]
+  
+  @@unique([discordId, guildId])
+}
+
+// Tabela pentru tranzacții
+model Transaction {
+  id        String   @id @default(cuid())
+  userId    String
+  type      TransactionType
+  amount    Int
+  reason    String?
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Tabela pentru shop
+model ShopItem {
+  id          String   @id @default(cuid())
+  guildId    String
+  name        String
+  description String?
+  price       Int
+  roleId      String?
+  category    String   @default("general")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  @@unique([guildId, name])
+}
+
+// Tabela pentru inventarul utilizatorilor
+model InventoryItem {
+  id        String   @id @default(cuid())
+  userId    String
+  itemName  String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, itemName])
+}
+
+// Tabela pentru avertismente (extinderea sistemului existent)
+model Warning {
+  id          String   @id @default(cuid())
+  userId      String
+  guildId     String
+  moderatorId String
+  reason      String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Tabela pentru setări guild
+model GuildSettings {
+  id            String   @id @default(cuid())
+  guildId       String   @unique
+  prefix        String   @default("!")
+  welcomeChannel String?
+  logChannel    String?
+  modRole       String?
+  economyEnabled Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Enum pentru tipurile de tranzacții
+enum TransactionType {
+  DAILY
+  WEEKLY
+  WORK
+  ROB
+  SHOP_PURCHASE
+  SHOP_SALE
+  TRANSFER
+  ADMIN_ADD
+  ADMIN_REMOVE
+  GAMBLE_WIN
+  GAMBLE_LOSE
+  LEVEL_UP
+  LOTTERY_TICKET
+  LOTTERY_WIN
+  SLOTS_JACKPOT
+  SLOTS_WIN_SPECIAL
+  SLOTS_WIN
+  SLOTS_WIN_SMALL
+  SLOTS_LOSE
+}

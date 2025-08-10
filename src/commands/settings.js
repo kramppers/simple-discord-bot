@@ -4,6 +4,7 @@ const config = require('../utils/configStore');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('settings').setDescription('Afiseaza setarile curente ale serverului.').setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+  category: 'moderation',
   async execute(interaction) {
     const cfg = config.getGuildConfig(interaction.guild.id);
     const embed = new EmbedBuilder()

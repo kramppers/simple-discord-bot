@@ -16,6 +16,7 @@ function formatDuration(seconds) {
 
 module.exports = {
   data: new SlashCommandBuilder().setName('uptime').setDescription('Arata de cat timp este online botul.'),
+  category: 'utility',
   async execute(interaction) {
     const uptime = process.uptime();
     await interaction.reply(embeds.info(`Uptime: ${formatDuration(uptime)}`, 'Bot'));

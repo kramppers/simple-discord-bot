@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'fun',
     .setName('roll')
     .setDescription('Da cu zarul (sides si count optionale).')
     .addIntegerOption((o) => o.setName('sides').setDescription('Numar fete (2-100)').setMinValue(2).setMaxValue(100))

@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'fun',
     .setName('say')
     .setDescription('Trimite un mesaj prin bot in acest canal.')
     .addStringOption((option) => option.setName('mesaj').setDescription('Textul de trimis').setRequired(true))

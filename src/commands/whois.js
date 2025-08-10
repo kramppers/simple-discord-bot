@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('whois').setDescription('Informatii detaliate despre un membru.').addUserOption((o) => o.setName('utilizator').setDescription('Membrul')),
+  category: 'utility',
   async execute(interaction) {
     const user = interaction.options.getUser('utilizator') || interaction.user;
     const member = await interaction.guild.members.fetch(user.id).catch(() => null);

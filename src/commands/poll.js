@@ -4,14 +4,15 @@ const EMOJIS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'fun',
     .setName('poll')
     .setDescription('Creeaza un sondaj simplu (2-5 optiuni).')
     .addStringOption((o) => o.setName('intrebare').setDescription('Intrebarea').setRequired(true))
     .addStringOption((o) => o.setName('opt1').setDescription('Optiunea 1').setRequired(true))
     .addStringOption((o) => o.setName('opt2').setDescription('Optiunea 2').setRequired(true))
-    .addStringOption((o) => o.setName('opt3').setDescription('Optiunea 3').setRequired(false))
-    .addStringOption((o) => o.setName('opt4').setDescription('Optiunea 4').setRequired(false))
-    .addStringOption((o) => o.setName('opt5').setDescription('Optiunea 5').setRequired(false))
+    .addStringOption((o) => o.setName('opt3').setDescription('Optiunea 3 (opțională)').setRequired(false))
+    .addStringOption((o) => o.setName('opt4').setDescription('Optiunea 4 (opțională)').setRequired(false))
+    .addStringOption((o) => o.setName('opt5').setDescription('Optiunea 5 (opțională)').setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
   async execute(interaction) {
     const q = interaction.options.getString('intrebare', true);

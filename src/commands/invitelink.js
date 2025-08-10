@@ -4,6 +4,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('invitelink').setDescription('Genereaza linkul de invitare al botului.'),
+  category: 'utility',
   async execute(interaction) {
     const clientId = process.env.CLIENT_ID;
     if (!clientId) {

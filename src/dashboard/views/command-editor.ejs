@@ -1,0 +1,429 @@
+<!-- Content for layout -->
+
+<!-- Command Editor Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">
+                <i class="fas fa-code text-discord-blurple mr-3"></i>
+                Editor Comenzi
+            </h1>
+            <p class="text-gray-600 mt-2">
+                Editează și gestionează comenzile botului Discord
+            </p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="/dashboard" class="text-discord-blurple hover:text-blue-600 font-medium">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Înapoi la Dashboard
+            </a>
+            <a href="/dashboard/bot-editor" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-robot mr-2"></i>
+                Editor Bot
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Command Categories -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-tools text-blue-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Utilitare</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.utility || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('utility')" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            Editează
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Moderare</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.moderation || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('moderation')" class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+            Editează
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-music text-green-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Muzica</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.music || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('music')" class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+            Editează
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-smile text-yellow-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Fun</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.fun || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('fun')" class="w-full bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+            Editează
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-coins text-purple-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Economy</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.economy || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('economy')" class="w-full bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors">
+            Editează
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center mb-4">
+            <div class="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-cog text-gray-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Admin</h3>
+                <p class="text-sm text-gray-500"><%= commandCounts.admin || 0 %> comenzi</p>
+            </div>
+        </div>
+        <button onclick="loadCommandsByCategory('admin')" class="w-full bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+            Editează
+        </button>
+    </div>
+</div>
+
+<!-- All Commands Overview -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">
+            <i class="fas fa-list text-discord-blurple mr-2"></i>
+            Toate Comenzile
+        </h3>
+        <button onclick="loadAllCommands()" class="bg-discord-blurple text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            <i class="fas fa-sync-alt mr-2"></i>
+            Încarcă Toate
+        </button>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="all-commands-overview">
+        <!-- Commands will be loaded here -->
+    </div>
+</div>
+
+<!-- Command List and Editor -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Command List -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-list text-discord-blurple mr-2"></i>
+            Lista Comenzi
+        </h3>
+        <div id="command-list" class="space-y-2 max-h-96 overflow-y-auto">
+            <!-- Commands will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Command Editor -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-edit text-discord-blurple mr-2"></i>
+            Editor Comandă
+        </h3>
+        <div id="command-editor" class="space-y-4">
+            <div class="text-center text-gray-500 py-8">
+                <i class="fas fa-arrow-left text-2xl mb-2"></i>
+                <p>Selectează o comandă din lista din stânga pentru a o edita</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Command Editor Template (Hidden) -->
+<template id="command-editor-template">
+    <div class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nume Comandă</label>
+            <input type="text" id="command-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple">
+        </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Descriere</label>
+            <textarea id="command-description" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple"></textarea>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Cod Comandă</label>
+            <textarea id="command-code" rows="15" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple font-mono text-sm"></textarea>
+        </div>
+
+        <div class="flex space-x-3">
+            <button onclick="saveCommand()" class="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-save mr-2"></i>
+                Salvează
+            </button>
+            <button onclick="testCommand()" class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-play mr-2"></i>
+                Testează
+            </button>
+            <button onclick="resetCommand()" class="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                <i class="fas fa-undo mr-2"></i>
+                Resetează
+            </button>
+        </div>
+    </div>
+</template>
+
+<!-- Command List Item Template (Hidden) -->
+<template id="command-item-template">
+    <div class="command-item p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors" data-command-name="">
+        <div class="flex items-center justify-between">
+            <div>
+                <h4 class="font-medium text-gray-900 command-name"></h4>
+                <p class="text-sm text-gray-500 command-description"></p>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="px-2 py-1 text-xs rounded-full command-category"></span>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+let currentCommand = null;
+let originalCommandData = null;
+
+function loadCommandsByCategory(category) {
+    fetch(`/api/commands/${category}`)
+        .then(response => response.json())
+        .then(commands => {
+            displayCommands(commands, category);
+        })
+        .catch(error => {
+            console.error('Error loading commands:', error);
+            showNotification('Eroare la încărcarea comenzilor', 'error');
+        });
+}
+
+function displayCommands(commands, category) {
+    const commandList = document.getElementById('command-list');
+    const template = document.getElementById('command-item-template');
+    
+    commandList.innerHTML = '';
+    
+    commands.forEach(command => {
+        const clone = template.content.cloneNode(true);
+        const item = clone.querySelector('.command-item');
+        
+        item.dataset.commandName = command.name;
+        item.querySelector('.command-name').textContent = command.name;
+        item.querySelector('.command-description').textContent = command.description || 'Fără descriere';
+        
+        const categorySpan = item.querySelector('.command-category');
+        categorySpan.textContent = category;
+        categorySpan.className = `px-2 py-1 text-xs rounded-full ${getCategoryColor(category)}`;
+        
+        item.addEventListener('click', () => loadCommandForEditing(command));
+        
+        commandList.appendChild(clone);
+    });
+}
+
+function getCategoryColor(category) {
+    const colors = {
+        utility: 'bg-blue-100 text-blue-800',
+        moderation: 'bg-red-100 text-red-800',
+        music: 'bg-green-100 text-green-800',
+        fun: 'bg-yellow-100 text-yellow-800',
+        economy: 'bg-purple-100 text-purple-800',
+        admin: 'bg-gray-100 text-gray-800'
+    };
+    return colors[category] || 'bg-gray-100 text-gray-800';
+}
+
+function loadCommandForEditing(command) {
+    currentCommand = command;
+    originalCommandData = JSON.parse(JSON.stringify(command));
+    
+    const editor = document.getElementById('command-editor');
+    const template = document.getElementById('command-editor-template');
+    
+    editor.innerHTML = '';
+    editor.appendChild(template.content.cloneNode(true));
+    
+    // Populate fields
+    document.getElementById('command-name').value = command.name;
+    document.getElementById('command-description').value = command.description || '';
+    document.getElementById('command-code').value = command.code || '';
+    
+    // Highlight selected command
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.classList.remove('ring-2', 'ring-discord-blurple');
+    });
+    
+    const selectedItem = document.querySelector(`[data-command-name="${command.name}"]`);
+    if (selectedItem) {
+        selectedItem.classList.add('ring-2', 'ring-discord-blurple');
+    }
+}
+
+function saveCommand() {
+    if (!currentCommand) return;
+    
+    const updatedCommand = {
+        name: document.getElementById('command-name').value,
+        description: document.getElementById('command-description').value,
+        code: document.getElementById('command-code').value
+    };
+    
+    fetch('/api/commands/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedCommand)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            showNotification('Comanda a fost salvată cu succes!', 'success');
+            currentCommand = updatedCommand;
+        } else {
+            showNotification('Eroare la salvarea comenzii: ' + result.error, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving command:', error);
+        showNotification('Eroare la salvarea comenzii', 'error');
+    });
+}
+
+function testCommand() {
+    if (!currentCommand) return;
+    
+    showNotification('Testarea comenzilor va fi implementată în curând!', 'info');
+}
+
+function resetCommand() {
+    if (!currentCommand || !originalCommandData) return;
+    
+    loadCommandForEditing(originalCommandData);
+    showNotification('Comanda a fost resetată la versiunea originală', 'info');
+}
+
+function showNotification(message, type = 'info') {
+    // Implementation similar to dashboard.js
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${getNotificationColor(type)} ${getNotificationBorderColor(type)}`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="${getNotificationIcon(type)} mr-3"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+function getNotificationColor(type) {
+    const colors = {
+        success: 'bg-green-50 text-green-800',
+        error: 'bg-red-50 text-red-800',
+        warning: 'bg-yellow-50 text-yellow-800',
+        info: 'bg-blue-50 text-blue-800'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationBorderColor(type) {
+    const colors = {
+        success: 'border-l-4 border-green-400',
+        error: 'border-l-4 border-red-400',
+        warning: 'border-l-4 border-yellow-400',
+        info: 'border-l-4 border-blue-400'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+    };
+    return icons[type] || icons.info;
+}
+
+function loadAllCommands() {
+    fetch('/api/commands')
+        .then(response => response.json())
+        .then(commands => {
+            displayAllCommands(commands);
+        })
+        .catch(error => {
+            console.error('Error loading all commands:', error);
+            showNotification('Eroare la încărcarea tuturor comenzilor', 'error');
+        });
+}
+
+function displayAllCommands(commands) {
+    const allCommandsOverview = document.getElementById('all-commands-overview');
+    const template = document.getElementById('command-item-template');
+    
+    allCommandsOverview.innerHTML = '';
+    
+    commands.forEach(command => {
+        const clone = template.content.cloneNode(true);
+        const item = clone.querySelector('.command-item');
+        
+        item.dataset.commandName = command.name;
+        item.querySelector('.command-name').textContent = command.name;
+        item.querySelector('.command-description').textContent = command.description || 'Fără descriere';
+        
+        const categorySpan = item.querySelector('.command-category');
+        categorySpan.textContent = command.category;
+        categorySpan.className = `px-2 py-1 text-xs rounded-full ${getCategoryColor(command.category)}`;
+        
+        item.addEventListener('click', () => loadCommandForEditing(command));
+        
+        allCommandsOverview.appendChild(clone);
+    });
+}
+
+// Load utility commands by default
+document.addEventListener('DOMContentLoaded', () => {
+    loadCommandsByCategory('utility');
+    loadAllCommands(); // Load all commands on page load
+});
+</script>

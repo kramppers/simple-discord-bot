@@ -4,8 +4,10 @@ const embeds = require('../utils/embeds');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('ban')
-    .setDescription('Baneaza un membru.')
+    .setDescription('Baneaza un membru.'),
+  category: 'moderation',
     .addUserOption((option) => option.setName('utilizator').setDescription('Membrul').setRequired(true))
+    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (opțional)').setRequired(false))
     .addIntegerOption((option) =>
       option
         .setName('zile')
@@ -14,7 +16,6 @@ module.exports = {
         .setMinValue(0)
         .setMaxValue(7),
     )
-    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (optional)'))
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
   async execute(interaction) {
     const user = interaction.options.getUser('utilizator', true);

@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('quote').setDescription('Citeaza un mesaj dupa ID in acest canal.').addStringOption((o) => o.setName('id').setDescription('ID mesaj').setRequired(true)),
+  category: 'fun',
   async execute(interaction) {
     const id = interaction.options.getString('id', true);
     try {

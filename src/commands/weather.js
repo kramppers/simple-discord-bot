@@ -16,6 +16,7 @@ function fetchJson(url) {
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'utility',
     .setName('weather')
     .setDescription('Vremea pentru un oras (sursă: open-meteo).')
     .addStringOption((o) => o.setName('oras').setDescription('ex: Bucharest').setRequired(true)),

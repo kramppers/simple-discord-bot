@@ -1,0 +1,642 @@
+<!-- Content for layout -->
+
+<!-- Dashboard Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                <i class="fas fa-tachometer-alt text-discord-blurple mr-3"></i>
+                Dashboard
+            </h1>
+            <p class="text-gray-600 dark:text-gray-300 mt-2">
+                Bun venit, <span class="font-semibold text-discord-blurple"><%= user.username %></span>! 
+                Gestionează-ți serverele Discord cu botul.
+            </p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="text-right">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Servere disponibile</p>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= guilds.length %></p>
+            </div>
+            <div class="h-12 w-12 bg-discord-blurple rounded-full flex items-center justify-center">
+                <i class="fas fa-server text-white text-xl"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bot Status Card -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mb-8" data-bot-id="<%= bot.id %>">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <img src="<%= bot.displayAvatarURL() %>" alt="Bot Avatar" class="w-16 h-16 rounded-full mr-4">
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white"><%= bot.username %></h3>
+                <p class="text-gray-600 dark:text-gray-300">Status: <span id="bot-status" class="text-green-500 font-semibold">Online</span></p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">ID: <%= bot.id %></p>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Servere</p>
+                    <p id="total-guilds" class="text-lg font-semibold text-gray-800 dark:text-white"><%= guilds.length %></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Utilizatori</p>
+                    <p id="total-members" class="text-lg font-semibold text-gray-800 dark:text-white">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
+                <i class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Membri</p>
+                <p id="total-members-card" class="text-2xl font-bold text-gray-900 dark:text-white">-</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 dark:bg-green-900">
+                <i class="fas fa-terminal text-green-600 dark:text-green-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Comenzi Executate</p>
+                <p id="commands-executed" class="text-2xl font-bold text-gray-900 dark:text-white">-</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900">
+                <i class="fas fa-clock text-purple-600 dark:text-purple-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Uptime</p>
+                <p id="bot-uptime" class="text-2xl font-bold text-gray-900 dark:text-white">-</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900">
+                <i class="fas fa-heartbeat text-yellow-600 dark:text-yellow-400 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Ping</p>
+                <p id="bot-ping" class="text-2xl font-bold text-gray-900 dark:text-white">-</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Section -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mb-8">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <i class="fas fa-bolt text-discord-blurple mr-2"></i>
+        Acțiuni Rapide
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button onclick="openBotEditor()" class="quick-action-btn bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg transition-colors flex flex-col items-center">
+            <i class="fas fa-cog text-2xl mb-2"></i>
+            <span class="font-medium">Editor Bot</span>
+        </button>
+        <button onclick="openCommandEditor()" class="quick-action-btn bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg transition-colors flex flex-col items-center">
+            <i class="fas fa-terminal text-2xl mb-2"></i>
+            <span class="font-medium">Editor Comenzi</span>
+        </button>
+        <button onclick="deployCommands()" class="quick-action-btn bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg transition-colors flex flex-col items-center">
+            <i class="fas fa-upload text-2xl mb-2"></i>
+            <span class="font-medium">Deploy Comenzi</span>
+        </button>
+        <button onclick="createBackup()" class="quick-action-btn bg-yellow-500 hover:bg-yellow-600 text-white p-4 rounded-lg transition-colors flex flex-col items-center">
+            <i class="fas fa-download text-2xl mb-2"></i>
+            <span class="font-medium">Backup</span>
+        </button>
+    </div>
+</div>
+
+<!-- System Health Section -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6 mb-8">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <i class="fas fa-heartbeat text-discord-blurple mr-2"></i>
+        Sănătatea Sistemului
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                <i class="fas fa-memory text-green-600 dark:text-green-400 text-2xl"></i>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Memorie</p>
+            <p id="memory-usage" class="text-lg font-semibold text-gray-900 dark:text-white">-</p>
+        </div>
+        <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                <i class="fas fa-microchip text-blue-600 dark:text-blue-400 text-2xl"></i>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">CPU</p>
+            <p id="cpu-usage" class="text-lg font-semibold text-gray-900 dark:text-white">-</p>
+        </div>
+        <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                <i class="fas fa-database text-purple-600 dark:text-purple-400 text-2xl"></i>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Database</p>
+            <p id="db-status" class="text-lg font-semibold text-gray-900 dark:text-white">-</p>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="mb-6">
+    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div class="relative flex-1 max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-search text-gray-400 dark:text-gray-500"></i>
+            </div>
+            <input type="text" 
+                   id="guild-search" 
+                   placeholder="Caută servere..." 
+                   class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-discord-blurple focus:border-transparent dark:bg-slate-700 dark:text-white dark:placeholder-gray-400">
+        </div>
+        <div class="flex items-center space-x-2">
+            <button id="refresh-stats" 
+                    class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Actualizează
+            </button>
+            <select id="sort-guilds" class="border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-discord-blurple dark:bg-slate-700 dark:text-white">
+                <option value="name">Sortează după nume</option>
+                <option value="members">Sortează după membri</option>
+                <option value="recent">Cele mai recente</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Servers Grid -->
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+            <i class="fas fa-server text-discord-blurple mr-3"></i>
+            Serverele Tale
+        </h2>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Total: <span id="guild-count" class="font-semibold text-gray-900 dark:text-white"><%= guilds.length %></span></span>
+        </div>
+    </div>
+    
+    <% if (guilds.length === 0) { %>
+        <div class="text-center py-12">
+            <div class="mx-auto h-16 w-16 bg-gray-200 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-exclamation-triangle text-gray-400 dark:text-gray-500 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nu ai servere disponibile</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">
+                Nu ai permisiuni de administrator sau moderator în niciun server, 
+                sau botul nu este invitat în serverele tale.
+            </p>
+            <a href="/invite" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-discord-blurple hover:bg-blue-700 transition-colors">
+                <i class="fab fa-discord mr-2"></i>
+                Invită Botul
+            </a>
+        </div>
+    <% } else { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="guilds-grid">
+            <% guilds.forEach(guild => { %>
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 overflow-hidden hover:shadow-lg dark:hover:shadow-slate-900/70 transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <% if (guild.icon) { %>
+                                <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" 
+                                     alt="<%= guild.name %>" 
+                                     class="w-12 h-12 rounded-lg mr-3">
+                            <% } else { %>
+                                <div class="w-12 h-12 bg-gray-200 dark:bg-slate-700 rounded-lg mr-3 flex items-center justify-center">
+                                    <i class="fas fa-server text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                            <% } %>
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white truncate"><%= guild.name %></h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-users mr-1"></i>
+                                    <span id="guild-<%= guild.id %>-members"><%= guild.memberCount || 0 %></span> membri
+                                </p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-hashtag mr-1"></i>
+                                    <%= guild.channelCount || 0 %> canale
+                                </p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="fas fa-user-tag mr-1"></i>
+                                    <%= guild.roleCount || 0 %> roluri
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Proprietar:</span>
+                                <span class="text-gray-900 dark:text-white font-medium"><%= guild.owner ? 'Da' : 'Nu' %></span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Permisiuni:</span>
+                                <span class="text-gray-900 dark:text-white font-medium">
+                                    <% if (guild.permissions && (parseInt(guild.permissions) & 0x8) === 0x8) { %>
+                                        <span class="text-green-600 dark:text-green-400">Administrator</span>
+                                    <% } else if (guild.permissions && (parseInt(guild.permissions) & 0x20) === 0x20) { %>
+                                        <span class="text-blue-600 dark:text-blue-400">Manager</span>
+                                    <% } else { %>
+                                        <span class="text-yellow-600 dark:text-yellow-400">Moderator</span>
+                                    <% } %>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <a href="/dashboard/guild/<%= guild.id %>" 
+                               class="flex-1 bg-discord-blurple text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                                <i class="fas fa-cog mr-2"></i>
+                                Gestionează
+                            </a>
+                            <button onclick="leaveGuild('<%= guild.id %>')" 
+                                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+                                    title="Părăsește serverul">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<!-- Recent Activity -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-md dark:shadow-slate-900/50 p-6">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <i class="fas fa-history text-discord-blurple mr-2"></i>
+        Activitate Recentă
+    </h3>
+    
+    <div id="recent-activity" class="space-y-3">
+        <div class="text-center text-gray-500 dark:text-gray-400 py-4">
+            <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+            <p>Se încarcă activitatea...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Dashboard JavaScript Functions
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateBotStats();
+    loadRecentActivity();
+    setupSearchAndFilter();
+    setupAutoRefresh();
+});
+
+function updateBotStats() {
+    // Update bot status and stats
+    fetch('/api/bot/status')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('bot-status').textContent = data.status;
+                document.getElementById('bot-status').className = `text-${data.status === 'online' ? 'green' : 'red'}-500 font-semibold`;
+                document.getElementById('total-members').textContent = data.totalMembers?.toLocaleString() || '0';
+                document.getElementById('total-members-card').textContent = data.totalMembers?.toLocaleString() || '0';
+                document.getElementById('bot-uptime').textContent = data.uptime || '0s';
+                document.getElementById('bot-ping').textContent = (data.ping || '0') + 'ms';
+            }
+        })
+        .catch(error => console.error('Error fetching bot status:', error));
+    
+    // Update command stats
+    fetch('/api/bot/command-stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('commands-executed').textContent = data.commandsExecuted?.toLocaleString() || '0';
+            }
+        })
+        .catch(error => console.error('Error fetching command stats:', error));
+}
+
+function loadRecentActivity() {
+    fetch('/api/bot/recent-activity')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.activities.length > 0) {
+                const activityContainer = document.getElementById('recent-activity');
+                activityContainer.innerHTML = data.activities.map(activity => `
+                    <div class="flex items-center p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full bg-${getActivityColor(activity.type)}-100 dark:bg-${getActivityColor(activity.type)}-900 flex items-center justify-center">
+                                <i class="fas fa-${getActivityIcon(activity.type)} text-${getActivityColor(activity.type)}-600 dark:text-${getActivityColor(activity.type)}-400"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">${activity.description}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">${formatTimestamp(activity.timestamp)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('recent-activity').innerHTML = `
+                    <div class="text-center text-gray-500 dark:text-gray-400 py-4">
+                        <i class="fas fa-info-circle text-2xl mb-2"></i>
+                        <p>Nu există activitate recentă</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading recent activity:', error);
+            document.getElementById('recent-activity').innerHTML = `
+                <div class="text-center text-red-500 dark:text-red-400 py-4">
+                    <i class="fas fa-exclamation-circle text-2xl mb-2"></i>
+                    <p>Eroare la încărcarea activității</p>
+                </div>
+            `;
+        });
+}
+
+function getActivityColor(type) {
+    const colors = {
+        'command': 'blue',
+        'join': 'green',
+        'leave': 'red',
+        'error': 'red',
+        'warning': 'yellow',
+        'info': 'blue'
+    };
+    return colors[type] || 'gray';
+}
+
+function getActivityIcon(type) {
+    const icons = {
+        'command': 'terminal',
+        'join': 'user-plus',
+        'leave': 'user-minus',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    return icons[type] || 'info-circle';
+}
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now - date;
+    
+    if (diff < 60000) return 'Acum câteva secunde';
+    if (diff < 3600000) return `Acum ${Math.floor(diff / 60000)} minute`;
+    if (diff < 86400000) return `Acum ${Math.floor(diff / 3600000)} ore`;
+    return date.toLocaleDateString('ro-RO');
+}
+
+function setupSearchAndFilter() {
+    const searchInput = document.getElementById('guild-search');
+    const sortSelect = document.getElementById('sort-guilds');
+    const guildsGrid = document.getElementById('guilds-grid');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterGuilds);
+    }
+    
+    if (sortSelect) {
+        sortSelect.addEventListener('change', sortGuilds);
+    }
+}
+
+function filterGuilds() {
+    const searchTerm = document.getElementById('guild-search').value.toLowerCase();
+    const guildCards = document.querySelectorAll('#guilds-grid > div');
+    
+    guildCards.forEach(card => {
+        const guildName = card.querySelector('h3').textContent.toLowerCase();
+        if (guildName.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    updateGuildCount();
+}
+
+function sortGuilds() {
+    const sortBy = document.getElementById('sort-guilds').value;
+    const guildsGrid = document.getElementById('guilds-grid');
+    const guildCards = Array.from(guildsGrid.children);
+    
+    guildCards.sort((a, b) => {
+        if (sortBy === 'name') {
+            const nameA = a.querySelector('h3').textContent.toLowerCase();
+            const nameB = b.querySelector('h3').textContent.toLowerCase();
+            return nameA.localeCompare(nameB);
+        } else if (sortBy === 'members') {
+            const membersA = parseInt(a.querySelector('[id^="guild-"][id$="-members"]').textContent) || 0;
+            const membersB = parseInt(b.querySelector('[id^="guild-"][id$="-members"]').textContent) || 0;
+            return membersB - membersA;
+        }
+        return 0;
+    });
+    
+    guildCards.forEach(card => guildsGrid.appendChild(card));
+}
+
+function updateGuildCount() {
+    const visibleGuilds = document.querySelectorAll('#guilds-grid > div[style="display: block"], #guilds-grid > div:not([style])').length;
+    document.getElementById('guild-count').textContent = visibleGuilds;
+}
+
+function leaveGuild(guildId) {
+    if (confirm('Ești sigur că vrei să părăsești acest server? Această acțiune nu poate fi anulată.')) {
+        fetch(`/api/guilds/${guildId}/leave`, { method: 'POST' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Ai părăsit serverul cu succes!', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification('Eroare la părăsirea serverului: ' + result.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error leaving guild:', error);
+                showNotification('Eroare la părăsirea serverului', 'error');
+            });
+    }
+}
+
+function setupAutoRefresh() {
+    // Refresh stats every 30 seconds
+    setInterval(updateBotStats, 30000);
+    
+    // Refresh activity every 2 minutes
+    setInterval(loadRecentActivity, 120000);
+    
+    // Refresh system health every 10 seconds
+    setInterval(updateSystemHealth, 10000);
+}
+
+// Manual refresh button
+document.getElementById('refresh-stats').addEventListener('click', function() {
+    this.querySelector('i').classList.add('fa-spin');
+    updateBotStats();
+    loadRecentActivity();
+    
+    setTimeout(() => {
+        this.querySelector('i').classList.remove('fa-spin');
+    }, 1000);
+});
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${getNotificationColor(type)} ${getNotificationBorderColor(type)}`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="${getNotificationIcon(type)} mr-3"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+function getNotificationColor(type) {
+    const colors = {
+        success: 'bg-green-50 text-green-800 dark:bg-green-900 dark:text-green-200',
+        error: 'bg-red-50 text-red-800 dark:bg-red-900 dark:text-red-200',
+        warning: 'bg-yellow-50 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+        info: 'bg-blue-50 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationBorderColor(type) {
+    const colors = {
+        success: 'border-l-4 border-green-400',
+        error: 'border-l-4 border-red-400',
+        warning: 'border-l-4 border-yellow-400',
+        info: 'border-l-4 border-blue-400'
+    };
+    return colors[type] || colors.info;
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+    };
+    return icons[type] || icons.info;
+}
+
+// New functions for enhanced dashboard features
+function updateSystemHealth() {
+    fetch('/api/bot/health')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const health = data.health;
+                
+                // Update memory usage
+                const memoryElement = document.getElementById('memory-usage');
+                if (memoryElement) {
+                    const memoryMB = Math.round(health.memory.heapUsed / 1024 / 1024);
+                    memoryElement.textContent = memoryMB + ' MB';
+                }
+                
+                // Update CPU usage (simplified)
+                const cpuElement = document.getElementById('cpu-usage');
+                if (cpuElement) {
+                    cpuElement.textContent = 'Active';
+                }
+                
+                // Update database status
+                const dbElement = document.getElementById('db-status');
+                if (dbElement) {
+                    dbElement.textContent = 'Connected';
+                    dbElement.className = 'text-lg font-semibold text-green-600 dark:text-green-400';
+                }
+            }
+        })
+        .catch(error => console.error('Error updating system health:', error));
+}
+
+function openBotEditor() {
+    window.location.href = '/dashboard/bot-editor';
+}
+
+function openCommandEditor() {
+    window.location.href = '/dashboard/command-editor';
+}
+
+function deployCommands() {
+    if (confirm('Ești sigur că vrei să deploy-ui comenzile? Aceasta poate dura câteva secunde.')) {
+        fetch('/api/bot/deploy-commands', { method: 'POST' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Comenzile au fost deploy-uite cu succes!', 'success');
+                } else {
+                    showNotification('Eroare la deploy-ul comenzilor: ' + result.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error deploying commands:', error);
+                showNotification('Eroare la deploy-ul comenzilor', 'error');
+            });
+    }
+}
+
+function createBackup() {
+    if (confirm('Ești sigur că vrei să creezi un backup? Aceasta poate dura câteva minute.')) {
+        fetch('/api/bot/backup', { method: 'POST' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showNotification('Backup-ul a fost creat cu succes!', 'success');
+                    // Optionally trigger download
+                    if (result.downloadUrl) {
+                        setTimeout(() => {
+                            window.open(result.downloadUrl, '_blank');
+                        }, 1000);
+                    }
+                } else {
+                    showNotification('Eroare la crearea backup-ului: ' + result.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error creating backup:', error);
+                showNotification('Eroare la crearea backup-ului', 'error');
+            });
+    }
+}
+
+// Initialize system health on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateSystemHealth();
+});
+</script>

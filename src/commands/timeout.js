@@ -13,11 +13,12 @@ const DURATION_CHOICES = [
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('timeout')
     .setDescription('Acorda sau scoate timeout (mute temporar).')
     .addUserOption((option) => option.setName('utilizator').setDescription('Membrul').setRequired(true))
     .addStringOption((option) => option.setName('durata').setDescription('Durata timeout').setRequired(true).addChoices(...DURATION_CHOICES))
-    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (optional)'))
+    .addStringOption((option) => option.setName('motiv').setDescription('Motivul (opțional)').setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
   async execute(interaction) {
     const user = interaction.options.getUser('utilizator', true);

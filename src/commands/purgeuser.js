@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('purgeuser')
     .setDescription('Sterge ultimele N mesaje de la un anumit utilizator din acest canal (max 100).')
     .addUserOption((o) => o.setName('utilizator').setDescription('Utilizatorul').setRequired(true))

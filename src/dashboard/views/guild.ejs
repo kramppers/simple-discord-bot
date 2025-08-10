@@ -1,0 +1,312 @@
+<!-- Content for layout -->
+
+<!-- Guild Header -->
+<div class="mb-8">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <% if (guild.icon) { %>
+                <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" 
+                     alt="<%= guild.name %>" 
+                     class="h-20 w-20 rounded-2xl mr-6">
+            <% } else { %>
+                <div class="h-20 w-20 bg-discord-blurple rounded-2xl flex items-center justify-center mr-6">
+                    <i class="fas fa-server text-white text-3xl"></i>
+                </div>
+            <% } %>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900"><%= guild.name %></h1>
+                <p class="text-gray-600 mt-1">
+                    ID: <span class="font-mono text-gray-700"><%= guild.id %></span>
+                    <% if (guild.ownerId === user.id) { %>
+                        • <span class="text-yellow-600 font-semibold"><i class="fas fa-crown mr-1"></i>Proprietar</span>
+                    <% } %>
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                    Creat în <span class="font-medium"><%= guild.createdAt.toLocaleDateString('ro-RO') %></span>
+                </p>
+            </div>
+        </div>
+        <div class="text-right">
+            <a href="/dashboard" class="text-discord-blurple hover:text-blue-600 font-medium">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Înapoi la Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Membri</p>
+                <p class="text-2xl font-bold text-gray-900"><%= stats.memberCount.toLocaleString() %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-hashtag text-green-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Canale</p>
+                <p class="text-2xl font-bold text-gray-900"><%= stats.channelCount.toLocaleString() %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-tag text-purple-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Roluri</p>
+                <p class="text-2xl font-bold text-gray-900"><%= stats.roleCount.toLocaleString() %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <div class="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-smile text-yellow-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="ml-4">
+                <p class="text-sm font-medium text-gray-500">Emoji-uri</p>
+                <p class="text-2xl font-bold text-gray-900"><%= stats.emojiCount.toLocaleString() %></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Boost Status -->
+<% if (stats.boostLevel > 0) { %>
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <div class="h-12 w-12 bg-pink-100 rounded-lg flex items-center justify-center mr-4">
+                <i class="fas fa-rocket text-pink-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Server Boost</h3>
+                <p class="text-gray-600">Nivel <%= stats.boostLevel %> • <%= stats.boostCount %> boost-uri</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800">
+                <i class="fas fa-star mr-1"></i>
+                Boosted
+            </span>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<!-- Management Sections -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Bot Commands -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-terminal text-discord-blurple mr-2"></i>
+            Comenzi Bot
+        </h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-red-500 mr-3"></i>
+                    <span class="font-medium">Moderare</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-coins text-yellow-500 mr-3"></i>
+                    <span class="font-medium">Economie</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-music text-pink-500 mr-3"></i>
+                    <span class="font-medium">Muzică</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-gamepad text-green-500 mr-3"></i>
+                    <span class="font-medium">Jocuri</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <button class="w-full bg-discord-blurple text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition-colors">
+                <i class="fas fa-cog mr-2"></i>
+                Configurează Comenzi
+            </button>
+        </div>
+    </div>
+
+    <!-- Server Settings -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-cog text-gray-600 mr-2"></i>
+            Setări Server
+        </h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-bell text-blue-500 mr-3"></i>
+                    <span class="font-medium">Notificări</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-link text-red-500 mr-3"></i>
+                    <span class="font-medium">Anti-Links</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-green-500 mr-3"></i>
+                    <span class="font-medium">Auto-Moderare</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <i class="fas fa-user-plus text-purple-500 mr-3"></i>
+                    <span class="font-medium">Welcome System</span>
+                </div>
+                <span class="text-green-500 text-sm font-medium">Active</span>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <button class="w-full bg-gray-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-gray-700 transition-colors">
+                <i class="fas fa-sliders-h mr-2"></i>
+                Editează Setări
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="fas fa-history text-gray-500 mr-2"></i>
+        Activitate Recentă
+    </h3>
+    
+    <div class="space-y-4">
+        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+            <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user-plus text-green-600"></i>
+                </div>
+            </div>
+            <div class="ml-4 flex-1">
+                <p class="text-sm font-medium text-gray-900">Utilizator nou s-a alăturat</p>
+                <p class="text-sm text-gray-500">Acum 5 minute</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+            <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-message text-blue-600"></i>
+                </div>
+            </div>
+            <div class="ml-4 flex-1">
+                <p class="text-sm font-medium text-gray-900">Mesaj automat răspuns</p>
+                <p class="text-sm text-gray-500">Acum 12 minute</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+            <div class="flex-shrink-0">
+                <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-coins text-yellow-600"></i>
+                </div>
+            </div>
+            <div class="ml-4 flex-1">
+                <p class="text-sm font-medium text-gray-900">Tranzacție economică</p>
+                <p class="text-sm text-gray-500">Acum 25 minute</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 text-center">
+        <button class="text-discord-blurple hover:text-blue-600 font-medium">
+            Vezi toată activitatea
+            <i class="fas fa-arrow-right ml-1"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+        <i class="fas fa-bolt text-yellow-500 mr-2"></i>
+        Acțiuni Rapide
+    </h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="/dashboard/bot-editor" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-robot text-blue-500 text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Editor Bot</span>
+        </a>
+        
+        <a href="/dashboard/commands" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-code text-green-500 text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Editor Comenzi</span>
+        </a>
+        
+        <button class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-users text-discord-blurple text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Gestionare Membri</span>
+        </button>
+        
+        <button class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-hashtag text-discord-blurple text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Gestionare Canale</span>
+        </button>
+        
+        <button class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-user-tag text-discord-blurple text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Gestionare Roluri</span>
+        </button>
+        
+        <button class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-discord-blurple hover:bg-blue-50 transition-colors">
+            <i class="fas fa-chart-bar text-discord-blurple text-2xl mb-2"></i>
+            <span class="text-sm font-medium text-gray-900">Statistici Detaliate</span>
+        </button>
+    </div>
+</div>

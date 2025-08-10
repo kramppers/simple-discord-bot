@@ -4,6 +4,7 @@ const { getOrCreatePlayer } = require('../music/player');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('join').setDescription('Face botul sa intre in canalul tau vocal.'),
+  category: 'music',
   async execute(interaction) {
     const member = interaction.member;
     if (!member?.voice?.channel) {

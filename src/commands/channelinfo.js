@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('channelinfo').setDescription('Informatii despre canalul curent.'),
+  category: 'utility',
   async execute(interaction) {
     const ch = interaction.channel;
     const embed = new EmbedBuilder()

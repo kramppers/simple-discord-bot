@@ -4,6 +4,7 @@ const store = require('../utils/warnsStore');
 
 module.exports = {
   data: new SlashCommandBuilder()
+  category: 'moderation',
     .setName('clearwarn')
     .setDescription('Sterge toate avertismentele unui membru.')
     .addUserOption((o) => o.setName('utilizator').setDescription('Membrul').setRequired(true))

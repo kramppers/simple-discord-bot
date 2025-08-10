@@ -1,0 +1,102 @@
+<!-- Content for layout -->
+
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Header -->
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-discord-blurple rounded-full flex items-center justify-center mb-6">
+                <i class="fab fa-discord text-white text-4xl"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                Conectare Dashboard
+            </h2>
+            <p class="text-gray-600">
+                Conectează-te cu contul tău Discord pentru a accesa dashboard-ul botului
+            </p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="space-y-6">
+                <!-- Discord Login Button -->
+                <div>
+                    <a href="/auth/discord" 
+                       class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-lg font-medium rounded-lg text-white discord-blurple hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-discord-blurple transition-colors">
+                        <i class="fab fa-discord mr-3 text-xl"></i>
+                        Conectează-te cu Discord
+                    </a>
+                </div>
+
+                <!-- Divider -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Sau</span>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-blue-800">
+                                Informații importante
+                            </h3>
+                            <div class="mt-2 text-sm text-blue-700">
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Ai nevoie de permisiuni de administrator sau moderator în serverele tale</li>
+                                    <li>Botul trebuie să fie adăugat în serverele pe care vrei să le gestionezi</li>
+                                    <li>Datele tale sunt protejate și nu sunt partajate cu terți</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Preview -->
+                <div class="space-y-4">
+                    <h4 class="text-lg font-medium text-gray-900 text-center">Ce poți face după conectare:</h4>
+                    
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            Vezi toate serverele tale cu botul
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            Monitorizează statistici în timp real
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            Gestionează setările botului
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            Configurează comenzi și funcționalități
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center">
+            <p class="text-sm text-gray-500">
+                Prin conectare, ești de acord cu 
+                <a href="#" class="text-discord-blurple hover:text-blue-600">Termenii și Condițiile</a>
+                noastre
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Background Pattern -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+</div>

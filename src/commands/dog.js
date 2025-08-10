@@ -16,6 +16,7 @@ function fetchJson(url) {
 
 module.exports = {
   data: new SlashCommandBuilder().setName('dog').setDescription('Un catel random 🐶'),
+  category: 'fun',
   async execute(interaction) {
     try {
       const json = await fetchJson('https://dog.ceo/api/breeds/image/random');

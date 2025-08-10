@@ -3,6 +3,7 @@ const embeds = require('../utils/embeds');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('snipe').setDescription('Arata ultimul mesaj sters din acest canal.'),
+  category: 'utility',
   async execute(interaction) {
     const key = `${interaction.guild.id}:${interaction.channel.id}`;
     const sn = global.__lastDeletedMessage?.get(key);
